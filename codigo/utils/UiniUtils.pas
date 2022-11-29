@@ -5,16 +5,16 @@ interface
 uses
   System.IOUtils,
 
-  Vcl.Forms,
+  Vcl.Forms,System.SysUtils,
 
   TypInfo,
   IniFiles;
 
 type
-  TSECAO = (CONFIGURACOES, INFORMACOES_GERAIS);
+  TSECAO = (CONFIGURACOES, INFORMACOES_GERAIS, DIRETORIOS);
 
 type
-  TPROPRIEDADE = (NOME_DATABASE, LOGADO);
+  TPROPRIEDADE = (NOME_DATABASE, SERVER, USER_NAME, PASSWORD, DRIVERID, PORT, ULTIMO_ACESSO, LOGADO, DIRETORIO_BANCO, RAVIN_SOURCES, CREATE_SQL, INSERTS_SQL, LIB);
 
 type
   TIniUtils = class
@@ -33,7 +33,13 @@ type
 
     const VALOR_VERDADEIRO : String = 'true';
     const VALOR_FALSO      : String = 'false';
-
+//    const DIRETORIO_BANCO  : 'C:\ProgramData\MySQL\MySQL Server 8.0\Data\ravin\';
+//    const VALOR_DATABASE   : String = 'ravin';
+//    const VALOR_SERVER     : String = 'localhost';
+//    const VALOR_USER_NAME  : String = 'root';
+//    const VALOR_PASSWORD   : String = 'root';
+//    const VALOR_DRIVER_ID  : String = 'MySQL';
+//    const VALOR_PORT       : String = '3306';
   end;
 
 implementation

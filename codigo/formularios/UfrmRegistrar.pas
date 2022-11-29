@@ -17,7 +17,8 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
-  System.Actions, Vcl.ActnList, FireDAC.Phys.MySQLWrapper, Vcl.ExtActns;
+  System.Actions, Vcl.ActnList, FireDAC.Phys.MySQLWrapper, Vcl.ExtActns,
+  Vcl.Mask;
 
 type
   TfrmRegistrar = class(TForm)
@@ -28,16 +29,17 @@ type
     lblTituloAutenticar: TLabel;
     lblSubTituloAutenticar: TLabel;
     edtNome: TEdit;
-    edtCpf: TEdit;
     edtLogin: TEdit;
     edtSenha: TEdit;
     edtConfirmarSenha: TEdit;
     frmBotaoPrimario1: TfrmBotaoPrimario;
+    medtCPF: TMaskEdit;
     procedure lblSubTituloAutenticarClick(Sender: TObject);
     procedure frmBotaoPrimario1spbBotaoPrimarioClick(Sender: TObject);
   private
     { Private declarations }
-    procedure SetMainForm(NovoMainForm: TForm);
+    procedure RegistrarUsuario();
+    procedure ExibirFormLogin();
   public
     { Public declarations }
   end;
@@ -49,11 +51,27 @@ implementation
 
 uses
   UusuarioDao,
-  Uusuario, UfrmLogin, UvalidadorUsuario;
+  Uusuario, UfrmLogin, UvalidadorUsuario, UformsUtils;
 
 {$R *.dfm}
 
+procedure TfrmRegistrar.ExibirFormLogin;
+begin
+   TFormsUtils.ShowFormPrincipal(frmLogin, TfrmLogin);
+   Close();
+end;
+
 procedure TfrmRegistrar.frmBotaoPrimario1spbBotaoPrimarioClick(Sender: TObject);
+begin
+  Self.RegistrarUsuario;
+end;
+
+procedure TfrmRegistrar.lblSubTituloAutenticarClick(Sender: TObject);
+begin
+  Self.ExibirFormLogin;
+end;
+
+procedure TfrmRegistrar.RegistrarUsuario;
 var
   LUsuario: TUsuario;
   LDao: TUsuarioDAO;
@@ -72,10 +90,14 @@ begin
         alteradoPor := 'admin';
       end;
 
-      TValidadorUsuario.Validar(LUsuario, edtConfirmarSenha.Text);
+      TValidadorUsuario.Validar(LUsuario, edtConfirmarSenha.Text, medtCPF.Text);
       LDao := TUsuarioDAO.Create();
       LDao.InserirUsuario(LUsuario);
 
+    if Assigned(LUsuario) then
+    begin
+      Self.ExibirFormLogin;
+    end;
     except
       on E: EMySQLNativeException do
       begin
@@ -91,27 +113,6 @@ begin
     end;
     FreeAndNil(LUsuario);
   end;
-end;
-
-procedure TfrmRegistrar.lblSubTituloAutenticarClick(Sender: TObject);
-begin
-  if not Assigned(frmLogin) then
-  begin
-    Application.CreateForm(TfrmLogin, frmLogin);
-  end;
-
-  SetMainForm(frmLogin);
-  frmLogin.Show();
-
-  Close();
-end;
-
-procedure TfrmRegistrar.SetMainForm(NovoMainForm: TForm);
-var
-  tmpMain: ^TCustomForm;
-begin
-  tmpMain := @Application.Mainform;
-  tmpMain^ := NovoMainForm;
 end;
 
 end.

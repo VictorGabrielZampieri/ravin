@@ -14,14 +14,14 @@ type
   public
     class procedure ShowFormPrincipal(pForm : TForm; pTForm : TComponentClass);
     class procedure ShowForm(pForm : TForm; pTForm : TComponentClass);
-     procedure SetarFormPrincipal(NewMainForm: TForm);
+    class procedure SetarFormPrincipal(NewMainForm: TForm);
   end;
 
 implementation
 
 { TFormsUtils }
 
- procedure TFormsUtils.SetarFormPrincipal(NewMainForm: TForm);
+ class procedure TFormsUtils.SetarFormPrincipal(NewMainForm: TForm);
   var
   tmpMain: ^TCustomForm;
 begin
