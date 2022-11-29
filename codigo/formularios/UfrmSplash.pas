@@ -94,14 +94,16 @@ end;
 function TfrmSplash.verificarLoginExipirou: boolean;
 var
   LDataExpiracaoLogin : TDateTime;
+  LExiteData : boolean;
   LUltimosAcesso : TDateTime; //Ultimo acesso do usuario
 begin
   //carregando a data e hora do ultimo login do usuario
-  LUltimosAcesso := StrToDateTime(TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO));
+  LExiteData := TryStrToDateTime((TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO)), LUltimosAcesso);
+
   //calculando a data de expiracao de login
   LDataExpiracaoLogin := IncDay(LUltimosAcesso, diasMaximoInatividade);
 
-  result := (LDataExpiracaoLogin >= now());
+  result := (LDataExpiracaoLogin >= now()) and (LExiteData);
 end;
 
 end.
