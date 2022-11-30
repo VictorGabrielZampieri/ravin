@@ -39,6 +39,7 @@ type
   private
     { Private declarations }
     procedure RegistrarUsuario();
+    procedure RegistrarPessoaUsuario();
     procedure ExibirFormLogin();
   public
     { Public declarations }
@@ -51,7 +52,8 @@ implementation
 
 uses
   UusuarioDao,
-  Uusuario, UfrmLogin, UvalidadorUsuario, UformsUtils, UpessoaDao;
+  Uusuario, UfrmLogin, UvalidadorUsuario, UformsUtils, Upessoa, UpessoaDao,
+  UvalidadorPessoa;
 
 {$R *.dfm}
 
@@ -71,6 +73,51 @@ begin
   Self.ExibirFormLogin;
 end;
 
+procedure TfrmRegistrar.RegistrarPessoaUsuario;
+var
+  LPessoa: TPessoa;
+  LDaoPessoa: TPessoaDAO;
+begin
+  try
+    try
+      LPessoa := TPessoa.Create();
+      LDaoPessoa := TPessoaDAO.Create();
+      with LPessoa do
+      begin
+        nome := edtNome.Text;        //em fase de teste
+        tipoPessoa := 'F';
+        cpf := medtCPF.Text;
+        telefone := 11111111;
+        dataNascimento := now();
+        email := 'teste@teste.com';
+        ativo := 1;
+        criadoEm := Now();
+        criadoPor := 'admin';
+        alteradoEm := Now();
+        alteradoPor := 'admin';
+      end;
+
+      TValidadorPessoa.Validar(LPessoa, medtCPF.Text);
+      LDaoPessoa := TPessoaDAO.Create();
+      LDaoPessoa.InserirPessoa(LPessoa);
+
+    except
+      on E: EMySQLNativeException do
+      begin
+        ShowMessage('Erro ao inserir a pessoa no banco');
+      end;
+      on E: Exception do
+        ShowMessage(E.Message);
+    end;
+  finally
+    if Assigned(LDaoPessoa) then
+    begin
+      FreeAndNil(LDaoPessoa);
+    end;
+    FreeAndNil(LPessoa);
+  end;
+end;
+
 procedure TfrmRegistrar.RegistrarUsuario;
 var
   LUsuario: TUsuario;
@@ -81,6 +128,7 @@ begin
     try
       LUsuario := TUsuario.Create();
       LDaoPessoa := TPessoaDAO.Create();
+      RegistrarPessoaUsuario;
       with LUsuario do
       begin
         login := edtLogin.Text;
@@ -92,12 +140,14 @@ begin
         alteradoPor := 'admin';
       end;
 
-      TValidadorUsuario.Validar(LUsuario, edtConfirmarSenha.Text, medtCPF.Text);
+      TValidadorUsuario.Validar(LUsuario, edtConfirmarSenha.Text);
       LDao := TUsuarioDAO.Create();
       LDao.InserirUsuario(LUsuario);
 
     if Assigned(LUsuario) then
     begin
+      ShowMessage('Cadastro efetuado com sucesso!');
+      ShowMessage('Logue no sistema para prosseguir!');
       Self.ExibirFormLogin;
     end;
     except
@@ -112,6 +162,9 @@ begin
     if Assigned(LDao) then
     begin
       FreeAndNil(LDao);
+    end;
+    if Assigned(LDaoPessoa) then
+    begin
       FreeAndNil(LDaoPessoa);
     end;
     FreeAndNil(LUsuario);

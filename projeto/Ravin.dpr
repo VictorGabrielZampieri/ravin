@@ -21,7 +21,10 @@ uses
   UfrmBotaoPrimario in '..\codigo\frames\UfrmBotaoPrimario.pas' {frmBotaoPrimario: TFrame},
   UvalidadorUsuario in '..\codigo\Validadores\UvalidadorUsuario.pas',
   UiniUtils in '..\codigo\utils\UiniUtils.pas',
-  UformsUtils in '..\codigo\utils\UformsUtils.pas';
+  UformsUtils in '..\codigo\utils\UformsUtils.pas',
+  Upessoa in '..\codigo\modelos\Upessoa.pas',
+  UpessoaDao in '..\codigo\dao\UpessoaDao.pas',
+  UvalidadorPessoa in '..\codigo\Validadores\UvalidadorPessoa.pas';
 
 {$R *.res}
 

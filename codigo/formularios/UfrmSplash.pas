@@ -34,7 +34,7 @@ type
     procedure InicializarAplicacao();
   public
     { Public declarations }
-    function verificarLoginExipirou() : boolean;
+    function verificarPrecisaLogar() : boolean;
 
     const diasMaximoInatividade : Integer = 5;//numero max de dias que o usuario fica logado sem precisar logar
   end;
@@ -68,7 +68,7 @@ begin
   //carregando se o usuario esta logado
   LLogado := TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.LOGADO);
 
-  if (LLogado = TIniUtils.VALOR_VERDADEIRO) and (not verificarLoginExipirou) {(DaysBetween(Now(),LUltimosAcesso) < diasMaximoInatividade)//minha forma antiga }then
+  if (LLogado = TIniUtils.VALOR_VERDADEIRO) and (verificarPrecisaLogar) {(DaysBetween(Now(),LUltimosAcesso) < diasMaximoInatividade)//minha forma antiga }then
   begin
     TformsUtils.ShowFormPrincipal(frmPainelGestao, TfrmPainelGestao);
     Close;
@@ -91,19 +91,23 @@ begin
 end;
 
 
-function TfrmSplash.verificarLoginExipirou: boolean;
+function TfrmSplash.verificarPrecisaLogar: boolean;
 var
   LDataExpiracaoLogin : TDateTime;
   LExiteData : boolean;
   LUltimosAcesso : TDateTime; //Ultimo acesso do usuario
 begin
-  //carregando a data e hora do ultimo login do usuario
-  LExiteData := TryStrToDateTime((TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO)), LUltimosAcesso);
+  try
+    //carregando a data e hora do ultimo login do usuario
+    LExiteData := TryStrToDateTime((TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO)), LUltimosAcesso);
 
-  //calculando a data de expiracao de login
-  LDataExpiracaoLogin := IncDay(LUltimosAcesso, diasMaximoInatividade);
+    //calculando a data de expiracao de login
+    LDataExpiracaoLogin := IncDay(LUltimosAcesso, diasMaximoInatividade);
+    result := (LDataExpiracaoLogin <= now()) and (LExiteData);
+  except on E: Exception do
+  Result := false;
+  end;
 
-  result := (LDataExpiracaoLogin >= now()) and (LExiteData);
 end;
 
 end.

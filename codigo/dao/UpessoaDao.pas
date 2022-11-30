@@ -52,14 +52,15 @@ begin
   begin
   Connection := dmRavin.cnxBancoDeDados;
   SQL.Add('INSERT INTO pessoa ');
-  SQL.Add(' (nome, tipoPessoa, cpf, telefone, dataNascimento, ativo, criadoEm, criadoPor, alteradoEm, alteradoPor) ');
-  SQL.add(' VALUES  (:nome, :tipoPessoa, :cpf, :telefone, :dataNascimento, :ativo, :criadoEm, :criadoPor, :alteradoEm, :alteradoPor)');
+  SQL.Add(' (nome, tipoPessoa, cpf, telefone, dataNascimento, email, ativo, criadoEm, criadoPor, alteradoEm, alteradoPor) ');
+  SQL.add(' VALUES  (:nome, :tipoPessoa, :cpf, :telefone, :dataNascimento, :email, :ativo, :criadoEm, :criadoPor, :alteradoEm, :alteradoPor)');
 
   ParamByName('nome').AsString := PPessoa.nome;
   ParamByName('tipoPessoa').AsString := PPessoa.tipoPessoa;
   ParamByName('cpf').AsString := PPessoa.cpf;
   ParamByName('telefone').AsInteger := PPessoa.telefone;
   ParamByName('dataNascimento').AsDate := PPessoa.dataNascimento;
+  ParamByName('email').AsString := PPessoa.email;
   ParamByName('ativo').AsInteger := PPessoa.ativo;
   ParamByName('criadoEm').AsDateTime := PPessoa.criadoEm;
   ParamByName('criadoPor').AsString := PPessoa.criadoPor;
@@ -73,3 +74,4 @@ end;
 
 
 end.
+
