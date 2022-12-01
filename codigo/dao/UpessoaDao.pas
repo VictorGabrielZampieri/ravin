@@ -3,7 +3,7 @@ unit UpessoaDao;
 interface
 
 uses
-  Upessoa, FireDAC.Comp.Client;
+  Upessoa, FireDAC.Comp.Client, System.Generics.Collections;
 
 type
   TPessoaDAO = class(TObject)
@@ -13,7 +13,10 @@ type
   protected
 
   public
+    function BuscarTodasPessoas(PTipoPessoa : char) : TList<TPessoa>;
+    function BuscarPessoaPorId(PIdPessoa: Integer) : TPessoa;
     procedure InserirPessoa(PPessoa : TPessoa);
+    procedure ExcluirPessoa(PIdPessoa: Integer);
     function BuscarIdPessoaMaisRecente(): Integer;
   end;
 
@@ -41,6 +44,101 @@ begin
   LQuery.Close();
   FreeAndNil(LQuery);
   Result := LId;
+end;
+
+function TPessoaDAO.BuscarPessoaPorId(PIdPessoa: Integer): TPessoa;
+var
+  LQuery : TFDQuery;
+  LPessoa : TPessoa;
+begin
+  LQuery := TFDQuery.Create(nil);
+  LQuery.Connection := dmRavin.cnxBancoDeDados;
+  LQuery.SQL.Text := 'SELECT * FROM pessoa where id = :id';
+  LQuery.ParamByName('id').AsInteger := PIdPessoa;
+  LQuery.Open();
+  LPessoa := nil;
+try
+begin
+     if not LQuery.IsEmpty then
+    begin
+      LPessoa := TPessoa.Create();
+      LPessoa.id := LQuery.FieldByName('id').AsInteger;
+      LPessoa.nome := LQuery.FieldByName('nome').AsString;
+      LPessoa.tipoPessoa := LQuery.FieldByName('tipoPessoa').AsString;
+      LPessoa.cpf := LQuery.FieldByName('cpf').AsString;
+      LPessoa.telefone := LQuery.FieldByName('telefone').AsInteger;
+      LPessoa.email := LQuery.FieldByName('email').AsString;
+      LPessoa.dataNascimento := LQuery.FieldByName('dataNascimento').AsDateTime;
+      LPessoa.ativo := LQuery.FieldByName('ativo').AsInteger;
+      LPessoa.criadoEm := LQuery.FieldByName('criadoEm').AsDateTime;
+      LPessoa.criadoPor := LQuery.FieldByName('criadoPor').AsString;
+      LPessoa.alteradoEm := LQuery.FieldByName('alteradoEm').AsDateTime;
+      LPessoa.alteradoPor := LQuery.FieldByName('alteradoPor').AsString;
+    end;
+end;
+
+  finally
+    LQuery.Close();
+    FreeAndNil(LQuery);
+end;
+  Result := LPessoa;
+end;
+
+function TPessoaDAO.BuscarTodasPessoas(PTipoPessoa: char): TList<TPessoa>;
+var
+  LQuery : TFDQuery;
+  LPessoa : TPessoa;
+  LListaPessoas : TList<TPessoa>;
+begin
+  LQuery := TFDQuery.Create(nil);
+  LListaPessoas := TList<TPessoa>.Create;
+  LQuery.Connection := dmRavin.cnxBancoDeDados;
+  LQuery.SQL.Text := 'SELECT * FROM pessoa where tipoPessoa = :tipoPessoa';
+  LQuery.ParamByName('tipoPessoa').AsString := PTipoPessoa;
+  LQuery.Open();
+  LQuery.First;
+  LPessoa := nil;
+try
+begin
+    while not LQuery.Eof do
+    begin
+      LPessoa := TPessoa.Create();
+      LPessoa.id := LQuery.FieldByName('id').AsInteger;
+      LPessoa.nome := LQuery.FieldByName('nome').AsString;
+      LPessoa.tipoPessoa := LQuery.FieldByName('tipoPessoa').AsString;
+      LPessoa.cpf := LQuery.FieldByName('cpf').AsString;
+      LPessoa.telefone := LQuery.FieldByName('telefone').AsInteger;
+      LPessoa.email := LQuery.FieldByName('email').AsString;
+      LPessoa.dataNascimento := LQuery.FieldByName('dataNascimento').AsDateTime;
+      LPessoa.ativo := LQuery.FieldByName('ativo').AsInteger;
+      LPessoa.criadoEm := LQuery.FieldByName('criadoEm').AsDateTime;
+      LPessoa.criadoPor := LQuery.FieldByName('criadoPor').AsString;
+      LPessoa.alteradoEm := LQuery.FieldByName('alteradoEm').AsDateTime;
+      LPessoa.alteradoPor := LQuery.FieldByName('alteradoPor').AsString;
+      LListaPessoas.Add(LPessoa);
+      LQuery.next;
+    end;
+end;
+
+  finally
+    LQuery.Close();
+    FreeAndNil(LQuery);
+end;
+  Result := LListaPessoas;
+end;
+
+procedure TPessoaDAO.ExcluirPessoa(PIdPessoa: Integer);
+var
+  LQuery : TFDQuery;
+begin
+  LQuery := TFDQuery.Create(nil);
+
+  LQuery.Connection := dmRavin.cnxBancoDeDados;
+  LQuery.SQL.Add('DELETE FROM pessoa WHERE id = :id');
+  LQuery.ParamByName('id').AsInteger := PIdPessoa;
+  LQuery.ExecSQL();
+                          ////////////////////////////////////
+  FreeAndNil(LQuery);
 end;
 
 procedure TPessoaDAO.InserirPessoa(PPessoa: TPessoa);

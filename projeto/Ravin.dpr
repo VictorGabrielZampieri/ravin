@@ -24,7 +24,11 @@ uses
   UformsUtils in '..\codigo\utils\UformsUtils.pas',
   Upessoa in '..\codigo\modelos\Upessoa.pas',
   UpessoaDao in '..\codigo\dao\UpessoaDao.pas',
-  UvalidadorPessoa in '..\codigo\Validadores\UvalidadorPessoa.pas';
+  UvalidadorPessoa in '..\codigo\Validadores\UvalidadorPessoa.pas',
+  UfrmBotaoCancelar in '..\codigo\frames\UfrmBotaoCancelar.pas' {frmBotaoCancelar: TFrame},
+  UfrmBotaoExcluir in '..\codigo\frames\UfrmBotaoExcluir.pas' {frmBotaoExcluir: TFrame},
+  UfrmCadastroCliente in '..\codigo\formularios\UfrmCadastroCliente.pas' {frmCadastroCliente},
+  UfrmListaClientes in '..\codigo\formularios\UfrmListaClientes.pas' {frmListaClientes};
 
 {$R *.res}
 
@@ -34,5 +38,7 @@ begin
   ReportMemoryLeaksOnShutdown := True;
   Application.CreateForm(TdmRavin, dmRavin);
   Application.CreateForm(TfrmSplash, frmSplash);
+  Application.CreateForm(TfrmCadastroCliente, frmCadastroCliente);
+  Application.CreateForm(TfrmListaClientes, frmListaClientes);
   Application.Run;
 end.

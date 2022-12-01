@@ -32,8 +32,10 @@ type
     pnlListaClientes: TPanel;
     lblListaClientesTitulo: TLabel;
     procedure frmBotaoPrimariospbBotaoPrimarioClick(Sender: TObject);
+    procedure frmBotaoCancelarspbBotaoCancelarClick(Sender: TObject);
   private
     { Private declarations }
+     procedure ExibirFormCadastroClientes();
   public
     { Public declarations }
   end;
@@ -43,7 +45,21 @@ var
 
 implementation
 
+uses
+  UformsUtils, UfrmCadastroCliente;
+
 {$R *.dfm}
+
+procedure TfrmListaClientes.ExibirFormCadastroClientes;
+begin
+  TFormsUtils.ShowForm(frmCadastroCliente, TfrmCadastroCliente);
+end;
+
+procedure TfrmListaClientes.frmBotaoCancelarspbBotaoCancelarClick(
+  Sender: TObject);
+begin
+  Close();
+end;
 
 procedure TfrmListaClientes.frmBotaoPrimariospbBotaoPrimarioClick
   (Sender: TObject);
@@ -55,6 +71,8 @@ begin
   LItem.SubItems.Add('2134234324');
   LItem.SubItems.Add('(47)9925645663');
   LItem.SubItems.Add('Ativo');
+  //rotina if form
+  Self.ExibirFormCadastroClientes;
 end;
 
 end.

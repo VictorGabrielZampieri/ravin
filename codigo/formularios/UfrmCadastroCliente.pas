@@ -33,6 +33,9 @@ type
     lblInformacoesGerenciais: TfrmBotaoPrimario;
     frmBotaoCancelar: TfrmBotaoCancelar;
     frmBotaoExcluir: TfrmBotaoExcluir;
+    procedure lblInformacoesGerenciaisspbBotaoPrimarioClick(Sender: TObject);
+    procedure frmBotaoCancelarspbBotaoCancelarClick(Sender: TObject);
+    procedure frmBotaoExcluirspbBotaoExcluirClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,5 +48,36 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmCadastroCliente.frmBotaoCancelarspbBotaoCancelarClick(
+  Sender: TObject);
+begin
+  Close();
+end;
+
+procedure TfrmCadastroCliente.frmBotaoExcluirspbBotaoExcluirClick(
+  Sender: TObject);
+var
+  LConfirmarExclusao : Integer;
+begin
+  LConfirmarExclusao MessageDlg('Realmente deseja excluir o registro', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
+
+  if (LConfirmarExclusao = mrYes) then
+  begin
+    ShowMessage('Registro Excluido com sucesso!');
+    close();
+  end
+  else if (LConfirmarExclusao = mrNo) then
+  begin
+
+  end
+end;
+
+procedure TfrmCadastroCliente.lblInformacoesGerenciaisspbBotaoPrimarioClick(
+  Sender: TObject);
+begin
+  ShowMessage('Cliente cadastrado com sucesso');
+  close();
+end;
 
 end.

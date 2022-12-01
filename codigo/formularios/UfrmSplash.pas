@@ -63,12 +63,13 @@ end;
 procedure TfrmSplash.InicializarAplicacao;
 var
   LLogado : String;
+  LData : TDateTime;
 begin
-
+   LData := StrToDateTime(TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO));
   //carregando se o usuario esta logado
   LLogado := TIniUtils.lerPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.LOGADO);
 
-  if (LLogado = TIniUtils.VALOR_VERDADEIRO) and (verificarPrecisaLogar) {(DaysBetween(Now(),LUltimosAcesso) < diasMaximoInatividade)//minha forma antiga }then
+  if (LLogado = TIniUtils.VALOR_VERDADEIRO) and {(verificarPrecisaLogar)} (DaysBetween(Now(),LData) < diasMaximoInatividade){minha forma antiga } then
   begin
     TformsUtils.ShowFormPrincipal(frmPainelGestao, TfrmPainelGestao);
     Close;

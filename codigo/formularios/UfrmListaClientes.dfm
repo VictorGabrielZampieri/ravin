@@ -2,7 +2,7 @@ object frmListaClientes: TfrmListaClientes
   Left = 0
   Top = 0
   Caption = 'Lista de Clientes'
-  ClientHeight = 438
+  ClientHeight = 466
   ClientWidth = 640
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,17 +17,16 @@ object frmListaClientes: TfrmListaClientes
     Left = 0
     Top = 0
     Width = 640
-    Height = 438
+    Height = 466
     Align = alClient
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 1024
-    ExplicitHeight = 749
+    ExplicitHeight = 438
     DesignSize = (
       640
-      438)
+      466)
     object lblInformacoesGerenciais: TLabel
       AlignWithMargins = True
       Left = 8
@@ -95,24 +94,25 @@ object frmListaClientes: TfrmListaClientes
     end
     inline frmBotaoCancelar: TfrmBotaoCancelar
       Left = 134
-      Top = 387
+      Top = 415
       Width = 120
       Height = 59
       Anchors = [akLeft, akBottom]
       TabOrder = 0
       ExplicitLeft = 134
-      ExplicitTop = 414
+      ExplicitTop = 387
       ExplicitWidth = 120
       ExplicitHeight = 59
       inherited pnlFundo: TPanel
         Width = 120
         Height = 59
         ExplicitWidth = 120
-        ExplicitHeight = 45
+        ExplicitHeight = 59
         inherited spbBotaoCancelar: TSpeedButton
           Width = 120
           Height = 59
           Caption = 'Cancelar'
+          OnClick = frmBotaoCancelarspbBotaoCancelarClick
           ExplicitLeft = 0
           ExplicitTop = 0
           ExplicitWidth = 120
@@ -122,7 +122,7 @@ object frmListaClientes: TfrmListaClientes
     end
     inline frmBotaoPrimario: TfrmBotaoPrimario
       Left = 8
-      Top = 387
+      Top = 415
       Width = 120
       Height = 59
       Anchors = [akLeft, akBottom]
@@ -131,14 +131,14 @@ object frmListaClientes: TfrmListaClientes
       ParentColor = False
       TabOrder = 1
       ExplicitLeft = 8
-      ExplicitTop = 424
+      ExplicitTop = 387
       ExplicitWidth = 120
       ExplicitHeight = 59
       inherited pnlFundo: TPanel
         Width = 120
         Height = 59
         ExplicitWidth = 120
-        ExplicitHeight = 45
+        ExplicitHeight = 59
         inherited spbBotaoPrimario: TSpeedButton
           Width = 120
           Height = 59
@@ -156,7 +156,7 @@ object frmListaClientes: TfrmListaClientes
       Left = 8
       Top = 181
       Width = 624
-      Height = 197
+      Height = 225
       Margins.Left = 8
       Margins.Top = 140
       Margins.Right = 8
@@ -194,9 +194,7 @@ object frmListaClientes: TfrmListaClientes
       ParentFont = False
       TabOrder = 2
       ViewStyle = vsReport
-      ExplicitLeft = 16
-      ExplicitTop = 189
-      ExplicitHeight = 234
+      ExplicitHeight = 197
     end
   end
 end

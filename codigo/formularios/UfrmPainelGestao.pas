@@ -43,10 +43,12 @@ type
     procedure frmMenuItemProdutoslblTituloClick(Sender: TObject);
     procedure frmMenuItemMesaslblTituloClick(Sender: TObject);
     procedure frmMenuItemComandaslblTituloClick(Sender: TObject);
+    procedure frmMenuItemPessoaslblTituloClick(Sender: TObject);
   private
     { Private declarations }
     procedure ExibirFormMesas();
     procedure ExibirFormComandas();
+    procedure ExibirFormClientes();
     procedure ExibirFormProdutos();
     procedure ExibirFormSobre();
     procedure Deslogar();
@@ -64,7 +66,8 @@ implementation
 uses
   UfrmSobre,
   UfrmProdutos,
-  UfrmMesas, UfrmComandas, UiniUtils,  UformsUtils, UfrmLogin;
+  UfrmMesas, UfrmComandas, UiniUtils,  UformsUtils, UfrmLogin,
+  UfrmListaClientes;
 
 procedure TfrmPainelGestao.Deslogar;
 begin
@@ -73,6 +76,11 @@ begin
       TIniUtils.VALOR_FALSO);
    TFormsUtils.ShowFormPrincipal(frmLogin, TfrmLogin);
    Close;
+end;
+
+procedure TfrmPainelGestao.ExibirFormClientes;
+begin
+  TFormsUtils.ShowForm(frmListaClientes, TfrmListaClientes);
 end;
 
 procedure TfrmPainelGestao.ExibirFormComandas;
@@ -108,6 +116,11 @@ end;
 procedure TfrmPainelGestao.frmMenuItemMesaslblTituloClick(Sender: TObject);
 begin
     self.ExibirFormMesas;
+end;
+
+procedure TfrmPainelGestao.frmMenuItemPessoaslblTituloClick(Sender: TObject);
+begin
+  self.ExibirFormClientes;
 end;
 
 procedure TfrmPainelGestao.frmMenuItemProdutoslblTituloClick(Sender: TObject);
