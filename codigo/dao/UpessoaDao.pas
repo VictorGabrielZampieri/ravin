@@ -13,6 +13,7 @@ type
   protected
 
   public
+    function BuscarCpfPessoa(PCpf : String) : String;
     function BuscarTodasPessoas(PTipoPessoa : char) : TList<TPessoa>;
     function BuscarPessoaPorId(PIdPessoa: Integer) : TPessoa;
     procedure InserirPessoa(PPessoa : TPessoa);
@@ -26,6 +27,26 @@ uses
   UdmRavin, System.SysUtils;
 
 { TPessoaDAO }
+
+function TPessoaDAO.BuscarCpfPessoa(PCpf: String): String;
+var
+  LQuery : TFDQuery;
+  LRow : String;
+begin
+  LQuery := TFDQuery.Create(nil);
+  LQuery.Connection := dmRavin.cnxBancoDeDados;
+  LQuery.SQL.Text := 'SELECT cpf FROM pessoa WHERE cpf = :cpf';
+   LQuery.ParamByName('cpf').AsString := PCpf;
+  LQuery.Open();
+
+  if not LQuery.IsEmpty then
+  begin
+    LRow := LQuery.FieldByName('cpf').AsString;
+  end;
+  LQuery.Close();
+  FreeAndNil(LQuery);
+  Result := LRow;
+end;
 
 function TPessoaDAO.BuscarIdPessoaMaisRecente: Integer;
 var

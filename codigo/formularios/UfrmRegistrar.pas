@@ -18,7 +18,7 @@ uses
   Vcl.ExtCtrls,
   Vcl.Imaging.pngimage,
   System.Actions, Vcl.ActnList, FireDAC.Phys.MySQLWrapper, Vcl.ExtActns,
-  Vcl.Mask;
+  Vcl.Mask, Upessoa;
 
 type
   TfrmRegistrar = class(TForm)
@@ -39,7 +39,7 @@ type
   private
     { Private declarations }
     procedure RegistrarUsuario();
-    procedure RegistrarPessoaUsuario();
+    function RegistrarPessoaUsuario() : TPessoa;
     procedure ExibirFormLogin();
   public
     { Public declarations }
@@ -52,7 +52,7 @@ implementation
 
 uses
   UusuarioDao,
-  Uusuario, UfrmLogin, UvalidadorUsuario, UformsUtils, Upessoa, UpessoaDao,
+  Uusuario, UfrmLogin, UvalidadorUsuario, UformsUtils, UpessoaDao,
   UvalidadorPessoa;
 
 {$R *.dfm}
@@ -73,7 +73,7 @@ begin
   Self.ExibirFormLogin;
 end;
 
-procedure TfrmRegistrar.RegistrarPessoaUsuario;
+function TfrmRegistrar.RegistrarPessoaUsuario : TPessoa;
 var
   LPessoa: TPessoa;
   LDaoPessoa: TPessoaDAO;
@@ -97,7 +97,7 @@ begin
         alteradoPor := 'admin';
       end;
 
-      TValidadorPessoa.Validar(LPessoa, medtCPF.Text);
+      TValidadorPessoa.Validar(LPessoa);
       LDaoPessoa := TPessoaDAO.Create();
       LDaoPessoa.InserirPessoa(LPessoa);
 
@@ -114,21 +114,24 @@ begin
     begin
       FreeAndNil(LDaoPessoa);
     end;
-    FreeAndNil(LPessoa);
+    Result := LPessoa;
   end;
 end;
 
 procedure TfrmRegistrar.RegistrarUsuario;
 var
   LUsuario: TUsuario;
+  LPessoa : TPessoa;
   LDao: TUsuarioDAO;
   LDaoPessoa: TPessoaDAO;
 begin
   try
     try
+      LPessoa := RegistrarPessoaUsuario;
+      if not(LPessoa.nome.IsEmpty) then
+      begin
       LUsuario := TUsuario.Create();
       LDaoPessoa := TPessoaDAO.Create();
-      RegistrarPessoaUsuario;
       with LUsuario do
       begin
         login := edtLogin.Text;
@@ -150,6 +153,7 @@ begin
       ShowMessage('Logue no sistema para prosseguir!');
       Self.ExibirFormLogin;
     end;
+      end;
     except
       on E: EMySQLNativeException do
       begin
@@ -168,6 +172,7 @@ begin
       FreeAndNil(LDaoPessoa);
     end;
     FreeAndNil(LUsuario);
+    FreeAndNil(LPessoa);
   end;
 end;
 

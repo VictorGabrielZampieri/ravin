@@ -38,7 +38,5 @@ begin
   ReportMemoryLeaksOnShutdown := True;
   Application.CreateForm(TdmRavin, dmRavin);
   Application.CreateForm(TfrmSplash, frmSplash);
-  Application.CreateForm(TfrmCadastroCliente, frmCadastroCliente);
-  Application.CreateForm(TfrmListaClientes, frmListaClientes);
   Application.Run;
 end.

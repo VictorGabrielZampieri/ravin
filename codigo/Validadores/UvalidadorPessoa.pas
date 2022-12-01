@@ -3,7 +3,7 @@ unit UvalidadorPessoa;
 interface
 
 uses
-  Upessoa, SysUtils;
+  Upessoa, SysUtils, UpessoaDao;
 
 type
   TvalidadorPessoa = class(TObject)
@@ -12,7 +12,7 @@ type
   protected
 
   public
-  class procedure Validar(PPessoa : TPessoa; PCpf : String);
+  class procedure Validar(PPessoa : TPessoa);
   class function ValidarCpf(pCpf : String): boolean;
 end;
 
@@ -20,13 +20,19 @@ implementation
 
 { TvalidadorPessoa }
 
-class procedure TValidadorPessoa.Validar(PPessoa : TPessoa; PCpf : String);
+class procedure TValidadorPessoa.Validar(PPessoa : TPessoa);
 var
   LCpfValido : Boolean;
+  LCpfPessoa : String;
+  LCpfDuplicado : String;
+  LDao : TPessoaDAO;
 begin
-  LCpfValido := ValidarCpf(PCpf);
+try
+  LCpfPessoa := PPessoa.cpf;
+  LCpfValido := ValidarCpf(LCpfPessoa);
+  LCpfDuplicado := LDao.BuscarCpfPessoa(LCpfPessoa);
 
-  if (PCpf.IsEmpty) then
+  if (LCpfPessoa.IsEmpty) then
   begin
     raise Exception.Create('O campo CPF não pode ser vazio');
   end;
@@ -35,6 +41,15 @@ begin
   begin
     raise Exception.Create('O CPF deve ser valido');
   end;
+
+  if not (LCpfDuplicado.IsEmpty) then
+  begin
+    FreeAndNil(PPessoa);
+    raise Exception.Create('CPF já cadastrado');
+  end;
+finally
+  FreeAndNil(LDAO);
+end;
 
 end;
 
