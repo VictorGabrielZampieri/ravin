@@ -20,6 +20,7 @@ type
     procedure cnxBancoDeDadosAfterConnect(Sender: TObject);
   private
     { Private declarations }
+    procedure ConfigurarIni();
     procedure CriarTabelas();
     procedure InserirDados();
   public
@@ -32,7 +33,7 @@ var
 implementation
 
 uses
-  UresourceUtils, UiniUtils;
+  UresourceUtils, UiniUtils, System.IOUtils;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
@@ -78,6 +79,28 @@ begin
   end;
 end;
 
+procedure TdmRavin.ConfigurarIni;
+var
+  LDiretorio : String;
+  LCaminhoLib : String;
+begin
+  LDiretorio := TPath.Combine(TPath.GetDocumentsPath, TIniUtils.Pasta_RAVIN);
+  LCaminhoLib := TPath.Combine(LDiretorio, TIniUtils.Path_LIB);
+
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.NOME_DATABASE, TIniUtils.VALOR_DATABASE);
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.SERVER, TIniUtils.VALOR_SERVER);
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.USER_NAME, TIniUtils.VALOR_USER_NAME);
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.PASSWORD, TIniUtils.VALOR_PASSWORD);
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.DRIVERID, TIniUtils.VALOR_DRIVER_ID);
+  TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.PORT, TIniUtils.VALOR_PORT);
+
+  TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.DIRETORIO_BANCO, TIniUtils.DIRETORIO_BANCO);
+  TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.RAVIN_SOURCES, TIniUtils.Pasta_RAVIN);
+  TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.CREATE_SQL, TIniUtils.Path_CREATE_SQL);
+  TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.INSERTS_SQL, TIniUtils.Path_INSERTS_SQL);
+  TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.LIB, LCaminhoLib);
+end;
+
 procedure TdmRavin.CriarTabelas;
 begin
   try
@@ -89,7 +112,16 @@ begin
 end;
 
 procedure TdmRavin.DataModuleCreate(Sender: TObject);
+var
+  LCriarIni : Boolean;
+  LCaminhoIni : String;
 begin
+  LCaminhoIni := TResourceUtils.RetornarCaminhoIni;
+  LCriarIni := not DirectoryExists(LCaminhoIni);
+  if (LCriarIni) then
+  begin
+    ConfigurarIni;
+  end;
   if not (cnxBancoDeDados.Connected) then
   begin
     cnxBancoDeDados.Connected := true;

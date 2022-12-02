@@ -33,13 +33,18 @@ type
 
     const VALOR_VERDADEIRO : String = 'true';
     const VALOR_FALSO      : String = 'false';
-//    const DIRETORIO_BANCO  : 'C:\ProgramData\MySQL\MySQL Server 8.0\Data\ravin\';
-//    const VALOR_DATABASE   : String = 'ravin';
-//    const VALOR_SERVER     : String = 'localhost';
-//    const VALOR_USER_NAME  : String = 'root';
-//    const VALOR_PASSWORD   : String = 'root';
-//    const VALOR_DRIVER_ID  : String = 'MySQL';
-//    const VALOR_PORT       : String = '3306';
+    const DIRETORIO_BANCO  : String = 'C:\ProgramData\MySQL\MySQL Server 8.0\Data\ravin\';
+    const VALOR_DATABASE   : String = 'ravin';
+    const VALOR_SERVER     : String = 'localhost';
+    const VALOR_USER_NAME  : String = 'root';
+    const VALOR_PASSWORD   : String = 'root';
+    const VALOR_DRIVER_ID  : String = 'MySQL';
+    const VALOR_PORT       : String = '3306';
+    const Pasta_RAVIN      : String = 'ravin_sources';
+    const Path_CREATE_SQL  : String = 'createTable.sql';
+    const Path_INSERTS_SQL : String = 'inserts.sql';
+    const Path_LIB         : String = 'libmysql.dll';
+//    'C:\Users\vgzampieri\Documents\ravin_sources\libmysql.dll';
   end;
 
 implementation

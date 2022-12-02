@@ -32,6 +32,12 @@ try
   LCpfValido := ValidarCpf(LCpfPessoa);
   LCpfDuplicado := LDao.BuscarCpfPessoa(LCpfPessoa);
 
+  if (PPessoa.nome.IsEmpty) then
+  begin
+    raise Exception.Create('O Nome não pode ser vazio');
+  end;
+
+
   if (LCpfPessoa.IsEmpty) then
   begin
     raise Exception.Create('O campo CPF não pode ser vazio');

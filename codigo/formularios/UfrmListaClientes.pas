@@ -18,7 +18,7 @@ uses
   Vcl.StdCtrls,
 
   UfrmBotaoPrimario,
-  UfrmBotaoCancelar, Vcl.ExtCtrls;
+  UfrmBotaoCancelar, Vcl.ExtCtrls, System.Generics.Collections, UpessoaDao;
 
 type
   TfrmListaClientes = class(TForm)
@@ -37,8 +37,11 @@ type
   private
     { Private declarations }
      procedure ExibirFormCadastroClientes();
+     procedure ListarPessoas();
   public
     { Public declarations }
+
+    const LTipoPessoa : Char = 'C';
   end;
 
 var
@@ -47,7 +50,7 @@ var
 implementation
 
 uses
-  UformsUtils, UfrmCadastroCliente;
+  UformsUtils, UfrmCadastroCliente, Upessoa;
 
 {$R *.dfm}
 
@@ -58,7 +61,7 @@ end;
 
 procedure TfrmListaClientes.FormShow(Sender: TObject);
 begin
- /////
+ ListarPessoas;
 end;
 
 procedure TfrmListaClientes.frmBotaoCancelarspbBotaoCancelarClick(
@@ -78,6 +81,30 @@ begin
 //  LItem.SubItems.Add('(47)9925645663');
 //  LItem.SubItems.Add('Ativo');
   Self.ExibirFormCadastroClientes;
+end;
+
+procedure TfrmListaClientes.ListarPessoas;
+var
+  LDao : TPessoaDAO;
+  I : Integer;
+  LPessoa : TPessoa;
+  LItem : TListItem;
+  LListaPessoas : TList<TPessoa>;
+begin
+  LDao := TPessoaDAO.Create();
+  LListaPessoas := LDao.BuscarTodasPessoas(LTipoPessoa);
+
+  for I := 0 to LListaPessoas.Count -1 do
+  begin
+    LPessoa := LListaPessoas.Items[I];
+    LItem.Caption := LPessoa.nome;
+    LItem.SubItems.Add(LPessoa.cpf);
+    LItem.SubItems.Add(LPessoa.telefone.ToString);
+    LItem.SubItems.Add(LPessoa.ativo.ToString);
+    FreeAndNil(LPessoa);
+  end;
+  FreeAndNil(LListaPessoas);
+  FreeAndNil(LDao);
 end;
 
 end.

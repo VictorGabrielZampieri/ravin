@@ -24,7 +24,6 @@ object frmListaClientes: TfrmListaClientes
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 438
     DesignSize = (
       640
       466)
@@ -101,7 +100,7 @@ object frmListaClientes: TfrmListaClientes
       Anchors = [akLeft, akBottom]
       TabOrder = 0
       ExplicitLeft = 134
-      ExplicitTop = 387
+      ExplicitTop = 415
       ExplicitWidth = 120
       ExplicitHeight = 59
       inherited pnlFundo: TPanel
@@ -132,7 +131,7 @@ object frmListaClientes: TfrmListaClientes
       ParentColor = False
       TabOrder = 1
       ExplicitLeft = 8
-      ExplicitTop = 387
+      ExplicitTop = 415
       ExplicitWidth = 120
       ExplicitHeight = 59
       inherited pnlFundo: TPanel
@@ -195,7 +194,6 @@ object frmListaClientes: TfrmListaClientes
       ParentFont = False
       TabOrder = 2
       ViewStyle = vsReport
-      ExplicitHeight = 197
     end
   end
 end

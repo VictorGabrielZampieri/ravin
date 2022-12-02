@@ -29,6 +29,8 @@ object frmCadastroCliente: TfrmCadastroCliente
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
+    ExplicitLeft = 3
+    ExplicitTop = 3
     DesignSize = (
       624
       459)
@@ -158,7 +160,6 @@ object frmCadastroCliente: TfrmCadastroCliente
           Width = 120
           Height = 45
           Caption = 'Salvar'
-          OnClick = lblInformacoesGerenciaisspbBotaoPrimarioClick
           ExplicitLeft = -192
           ExplicitTop = 32
           ExplicitWidth = 320

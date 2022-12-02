@@ -9,6 +9,8 @@ type
   protected
 
   public
+   class procedure criarDiretorio();
+   class function RetornarCaminhoIni() : String;
    class function carregarArquivoResource(PNomeArquivo: String;
       PNomeAplicacao: String): String; //metodo estatico
   end;
@@ -35,7 +37,7 @@ begin
       LCaminhoPastaAplicacao := TPath.Combine(TPath.GetDocumentsPath, PNomeAplicacao);
       LCaminhoArquivo := TPath.Combine(LCaminhoPastaAplicacao, PNomeArquivo);
 
-      LConteudoArquivo.LoadFromFile(LCaminhoArquivo); 
+      LConteudoArquivo.LoadFromFile(LCaminhoArquivo);
       LConteudoTexto := LConteudoArquivo.Text;
     except
       on E: Exception do
@@ -47,6 +49,28 @@ begin
   end;
 
    Result := LConteudoTexto;
+end;
+
+class procedure TResourceUtils.criarDiretorio;
+var
+  LNomePasta : String;
+  LCaminhoPastaAplicacao: String;
+begin
+  LNomePasta := 'Ravin_sources';
+  LCaminhoPastaAplicacao := TPath.Combine(TPath.GetDocumentsPath, LNomePasta);
+  ForceDirectories(LCaminhoPastaAplicacao);
+end;
+
+class function TResourceUtils.RetornarCaminhoIni: String;
+var
+  LNomePasta : String;
+  LIni       : String;
+  LCaminhoPastaAplicacao: String;
+begin
+  LNomePasta := 'Ravin_sources';
+  LCaminhoPastaAplicacao := TPath.Combine(TPath.GetDocumentsPath, LNomePasta);
+  LIni := 'configuracoes.ini';
+  result := TPath.Combine(TPath.GetDocumentsPath, LIni);;
 end;
 
 end.
