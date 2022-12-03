@@ -14,7 +14,7 @@ type
   TSECAO = (CONFIGURACOES, INFORMACOES_GERAIS, DIRETORIOS);
 
 type
-  TPROPRIEDADE = (NOME_DATABASE, SERVER, USER_NAME, PASSWORD, DRIVERID, PORT, ULTIMO_ACESSO, LOGADO, DIRETORIO_BANCO, RAVIN_SOURCES, CREATE_SQL, INSERTS_SQL, LIB);
+  TPROPRIEDADE = (NOME_DATABASE, SERVER, USER_NAME, PASSWORD, DRIVERID, PORT, ULTIMO_ACESSO, LOGADO, IDCliente, DIRETORIO_BANCO, RAVIN_SOURCES, CREATE_SQL, INSERTS_SQL, LIB);
 
 type
   TIniUtils = class
@@ -44,6 +44,7 @@ type
     const Path_CREATE_SQL  : String = 'createTable.sql';
     const Path_INSERTS_SQL : String = 'inserts.sql';
     const Path_LIB         : String = 'libmysql.dll';
+    const Data_Defult      : TDateTime = 01/01/2000;
 //    'C:\Users\vgzampieri\Documents\ravin_sources\libmysql.dll';
   end;
 

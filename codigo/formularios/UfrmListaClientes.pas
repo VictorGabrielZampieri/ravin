@@ -18,7 +18,8 @@ uses
   Vcl.StdCtrls,
 
   UfrmBotaoPrimario,
-  UfrmBotaoCancelar, Vcl.ExtCtrls, System.Generics.Collections, UpessoaDao;
+  UfrmBotaoCancelar, Vcl.ExtCtrls, System.Generics.Collections, UpessoaDao,
+  UiniUtils;
 
 type
   TfrmListaClientes = class(TForm)
@@ -34,14 +35,18 @@ type
     procedure frmBotaoPrimariospbBotaoPrimarioClick(Sender: TObject);
     procedure frmBotaoCancelarspbBotaoCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lvwClientesSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
   private
     { Private declarations }
+     procedure GravarIdPessoaIni(PCpf : String);
      procedure ExibirFormCadastroClientes();
      procedure ListarPessoas();
   public
     { Public declarations }
 
     const LTipoPessoa : Char = 'C';
+    const LPosiscaoColunaCpf  : Integer = 1;
   end;
 
 var
@@ -72,15 +77,22 @@ end;
 
 procedure TfrmListaClientes.frmBotaoPrimariospbBotaoPrimarioClick
   (Sender: TObject);
-//var
-//  LItem: TListItem;
 begin
-//  LItem := lvwClientes.Items.Add();
-//  LItem.Caption := 'Marcio';
-//  LItem.SubItems.Add('2134234324');
-//  LItem.SubItems.Add('(47)9925645663');
-//  LItem.SubItems.Add('Ativo');
   Self.ExibirFormCadastroClientes;
+end;
+
+procedure TfrmListaClientes.GravarIdPessoaIni(PCpf: String);
+var
+  LId : Integer;
+  LDao : TPessoaDAO;
+begin
+  try
+    LDao := TPessoaDAO.Create();
+    LId  := LDao.BuscarIdPessoaPorCpf(PCpf);
+    TIniUtils.gravarPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.IDCliente, LId.ToString);
+  finally
+    FreeAndNil(LDao);
+  end;
 end;
 
 procedure TfrmListaClientes.ListarPessoas;
@@ -97,6 +109,7 @@ begin
   for I := 0 to LListaPessoas.Count -1 do
   begin
     LPessoa := LListaPessoas.Items[I];
+    LItem   := lvwClientes.Items.Add();
     LItem.Caption := LPessoa.nome;
     LItem.SubItems.Add(LPessoa.cpf);
     LItem.SubItems.Add(LPessoa.telefone.ToString);
@@ -105,6 +118,13 @@ begin
   end;
   FreeAndNil(LListaPessoas);
   FreeAndNil(LDao);
+end;
+
+procedure TfrmListaClientes.lvwClientesSelectItem(Sender: TObject;
+  Item: TListItem; Selected: Boolean);
+begin
+  GravarIdPessoaIni(Item.SubItems[LPosiscaoColunaCpf]);
+  ExibirFormCadastroClientes();
 end;
 
 end.

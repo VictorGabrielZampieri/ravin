@@ -70,7 +70,7 @@ begin
   LNomePasta := 'Ravin_sources';
   LCaminhoPastaAplicacao := TPath.Combine(TPath.GetDocumentsPath, LNomePasta);
   LIni := 'configuracoes.ini';
-  result := TPath.Combine(TPath.GetDocumentsPath, LIni);;
+  result := TPath.Combine(LCaminhoPastaAplicacao, LIni);;
 end;
 
 end.

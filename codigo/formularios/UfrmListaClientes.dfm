@@ -194,6 +194,7 @@ object frmListaClientes: TfrmListaClientes
       ParentFont = False
       TabOrder = 2
       ViewStyle = vsReport
+      OnSelectItem = lvwClientesSelectItem
     end
   end
 end

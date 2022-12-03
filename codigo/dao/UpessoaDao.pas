@@ -13,6 +13,7 @@ type
   protected
 
   public
+    function BuscarIdPessoaPorCpf(PCpf : String) : Integer;
     function BuscarCpfPessoa(PCpf : String) : String;
     function BuscarTodasPessoas(PTipoPessoa : char) : TList<TPessoa>;
     function BuscarPessoaPorId(PIdPessoa: Integer) : TPessoa;
@@ -67,6 +68,26 @@ begin
   Result := LId;
 end;
 
+function TPessoaDAO.BuscarIdPessoaPorCpf(PCpf: String): Integer;
+var
+  LQuery : TFDQuery;
+  LId : Integer;
+begin
+  LQuery := TFDQuery.Create(nil);
+  LQuery.Connection := dmRavin.cnxBancoDeDados;
+  LQuery.SQL.Text := 'SELECT id FROM pessoa WHERE cpf = :cpf';
+   LQuery.ParamByName('cpf').AsString := PCpf;
+  LQuery.Open();
+
+  if not LQuery.IsEmpty then
+  begin
+    LId := LQuery.FieldByName('id').AsInteger;
+  end;
+  LQuery.Close();
+  FreeAndNil(LQuery);
+  Result := LId;
+end;
+
 function TPessoaDAO.BuscarPessoaPorId(PIdPessoa: Integer): TPessoa;
 var
   LQuery : TFDQuery;
@@ -90,7 +111,7 @@ begin
       LPessoa.telefone := LQuery.FieldByName('telefone').AsInteger;
       LPessoa.email := LQuery.FieldByName('email').AsString;
       LPessoa.dataNascimento := LQuery.FieldByName('dataNascimento').AsDateTime;
-      LPessoa.ativo := LQuery.FieldByName('ativo').AsInteger;
+      LPessoa.ativo := LQuery.FieldByName('ativo').AsBoolean;
       LPessoa.criadoEm := LQuery.FieldByName('criadoEm').AsDateTime;
       LPessoa.criadoPor := LQuery.FieldByName('criadoPor').AsString;
       LPessoa.alteradoEm := LQuery.FieldByName('alteradoEm').AsDateTime;
@@ -131,7 +152,7 @@ begin
       LPessoa.telefone := LQuery.FieldByName('telefone').AsInteger;
       LPessoa.email := LQuery.FieldByName('email').AsString;
       LPessoa.dataNascimento := LQuery.FieldByName('dataNascimento').AsDateTime;
-      LPessoa.ativo := LQuery.FieldByName('ativo').AsInteger;
+      LPessoa.ativo := LQuery.FieldByName('ativo').AsBoolean;
       LPessoa.criadoEm := LQuery.FieldByName('criadoEm').AsDateTime;
       LPessoa.criadoPor := LQuery.FieldByName('criadoPor').AsString;
       LPessoa.alteradoEm := LQuery.FieldByName('alteradoEm').AsDateTime;
@@ -180,7 +201,7 @@ begin
   ParamByName('telefone').AsInteger := PPessoa.telefone;
   ParamByName('dataNascimento').AsDate := PPessoa.dataNascimento;
   ParamByName('email').AsString := PPessoa.email;
-  ParamByName('ativo').AsInteger := PPessoa.ativo;
+  ParamByName('ativo').AsBoolean := PPessoa.ativo;
   ParamByName('criadoEm').AsDateTime := PPessoa.criadoEm;
   ParamByName('criadoPor').AsString := PPessoa.criadoPor;
   ParamByName('alteradoEm').AsDateTime := PPessoa.alteradoEm;

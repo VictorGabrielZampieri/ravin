@@ -11,7 +11,7 @@ type TPessoa = class(TObject)
     Ftelefone: Integer;
     Fdatanascimento: TDate;
     FEmail : String;
-    FAtivo : Integer;
+    FAtivo : boolean;
     FcriadoEm: TDateTime;
     FcriadoPor: String;
     FalteradoEm: TDateTime;
@@ -27,7 +27,7 @@ type TPessoa = class(TObject)
    property telefone: Integer read Ftelefone write Ftelefone;
    property dataNascimento: TDate read Fdatanascimento write Fdatanascimento;
    property email: String read Femail write Femail;
-   property ativo: Integer read Fativo write Fativo;
+   property ativo: boolean read Fativo write Fativo;
    property criadoEm: TDateTime read FcriadoEm write FcriadoEm;
    property criadoPor: String read FcriadoPor write FcriadoPor;
    property alteradoEm: TDateTime read FalteradoEm write FalteradoEm;

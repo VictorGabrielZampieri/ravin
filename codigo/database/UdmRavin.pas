@@ -94,6 +94,8 @@ begin
   TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.DRIVERID, TIniUtils.VALOR_DRIVER_ID);
   TIniUtils.gravarPropriedade(TSECAO.CONFIGURACOES, TPROPRIEDADE.PORT, TIniUtils.VALOR_PORT);
 
+  TIniUtils.gravarPropriedade(TSECAO.INFORMACOES_GERAIS, TPROPRIEDADE.ULTIMO_ACESSO, DateToStr(TIniUtils.Data_Defult));
+
   TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.DIRETORIO_BANCO, TIniUtils.DIRETORIO_BANCO);
   TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.RAVIN_SOURCES, TIniUtils.Pasta_RAVIN);
   TIniUtils.gravarPropriedade(TSECAO.DIRETORIOS, TPROPRIEDADE.CREATE_SQL, TIniUtils.Path_CREATE_SQL);
@@ -117,7 +119,7 @@ var
   LCaminhoIni : String;
 begin
   LCaminhoIni := TResourceUtils.RetornarCaminhoIni;
-  LCriarIni := not DirectoryExists(LCaminhoIni);
+  LCriarIni := not FileExists(LCaminhoIni);
   if (LCriarIni) then
   begin
     ConfigurarIni;

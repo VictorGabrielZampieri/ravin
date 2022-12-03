@@ -90,7 +90,7 @@ begin
         telefone := 11111111;
         dataNascimento := now();
         email := 'teste@teste.com';
-        ativo := 1;
+        ativo := true;
         criadoEm := Now();
         criadoPor := 'admin';
         alteradoEm := Now();
