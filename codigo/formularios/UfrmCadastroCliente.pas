@@ -43,6 +43,7 @@ type
     procedure ExibirForm();
     procedure CadastrarCliente();
     procedure ExcluirCliente();
+    procedure LimparCampos();
   public
     { Public declarations }
 
@@ -111,14 +112,33 @@ procedure TfrmCadastroCliente.ExcluirCliente;
 var
   LConfirmarExclusao : Integer;
   LDao : TPessoaDAO;
+  LIdPessoa : Integer;
 begin
+try
   LConfirmarExclusao := MessageDlg('Realmente deseja excluir o registro', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
 
   if (LConfirmarExclusao = mrYes) then
   begin
+    LDao := TPessoaDAO.Create();
+    LIdPessoa := LDao.BuscarIdPessoaPorCpf(mskCpf.Text);
+
+    if not(LIdPessoa.ToString.IsEmpty) then
+    begin
+    LDao.ExcluirPessoa(LIdPessoa);
     ShowMessage('Registro Excluido com sucesso!');
+    end
+    else
+    begin
+      Self.LimparCampos();
+    end;
     close();
   end;
+finally
+  if Assigned(LDao) then
+  begin
+    FreeAndNil(LDao);
+  end;
+end;
 end;
 
 procedure TfrmCadastroCliente.ExibirForm;
@@ -139,9 +159,11 @@ begin
       edtNome.Text := LPessoa.nome;
       edtTelefone.Text := LPessoa.telefone.ToString;
       mskCpf.Text := LPessoa.cpf;
+      dtpDataNascimento.Date := LPessoa.dataNascimento;
     end;
   finally
-
+    FreeAndNil(LDao);
+    FreeAndNil(LPessoa);
   end;
 end;
 
@@ -166,6 +188,13 @@ procedure TfrmCadastroCliente.lblInformacoesGerenciaisspbBotaoPrimarioClick(
   Sender: TObject);
 begin
   CadastrarCliente;
+end;
+
+procedure TfrmCadastroCliente.LimparCampos;
+begin
+ edtNome.Text := '';
+ edtTelefone.Text := '';
+ mskCpf.Text := '';
 end;
 
 end.
